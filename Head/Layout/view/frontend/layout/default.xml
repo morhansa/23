@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- حذف الحاويات الافتراضية للهيدر -->
+        <referenceContainer name="header.container" remove="true"/>
+        <referenceContainer name="header.panel" remove="true"/>
+        <referenceContainer name="header-wrapper" remove="true"/>
+        
+        <!-- إضافة بلوك الهيدر الخاص بـ Porto -->
+        <referenceContainer name="page.wrapper">
+            <block class="Smartwave\Porto\Block\Template" name="porto_header" template="Smartwave_Porto::html/header.phtml" before="main.content">
+                <block class="Magento\Framework\View\Element\Html\Links" name="header.links">
+                    <arguments>
+                        <argument name="css_class" xsi:type="string">header links</argument>
+                    </arguments>
+                </block>
+                <block class="Smartwave\Porto\Block\Form\Login" name="header_customer_form_login" ifconfig="porto_settings/header/login_popup" template="Smartwave_Porto::html/login.phtml"/>
+                <block class="Magento\Store\Block\Switcher" name="store_language" as="store_language" template="switch/languages.phtml"/>
+                <block class="Magento\Framework\View\Element\Template" name="top.search" as="topSearch" template="Magento_Search::form.mini.phtml" />
+                <block class="Smartwave\Porto\Block\Template" name="custom_block" template="html/header_custom_block.phtml" ifconfig="porto_settings/header/static_block" after="-"/>
+                <block class="Smartwave\Porto\Block\Template" name="custom_block_top" template="html/top_custom_block.phtml" ifconfig="porto_settings/header/static_block_top" after="-"/>
+                <block class="Smartwave\Porto\Block\Template" name="custom_block_menu" template="html/header_custom_block_menu.phtml" after="-"/>
+                <block class="Smartwave\Porto\Block\Template" name="porto_custom_notice" template="html/custom_notice.phtml" after="-"/>
+            </block>
+        </referenceContainer>
+        
+        <!-- نقل العناصر إلى الهيدر -->
+        <move element="navigation.sections" destination="porto_header"/>
+        <move element="top.search" destination="porto_header"/>
+        <move element="minicart" destination="porto_header"/>
+        <move element="currency" destination="porto_header"/>
+        <move element="logo" destination="porto_header"/>
+        <move element="skip_to_content" destination="porto_header"/>
+        
+        <!-- نقل page.top بعد الهيدر -->
+        <move element="page.top" destination="page.wrapper" after="porto_header"/>
+        
+        <!-- إضافة بلوك الفوتر الخاص بـ Porto -->
+        <referenceContainer name="footer-container">
+            <block class="Smartwave\Porto\Block\Template" name="footer_block" template="Smartwave_Porto::html/footer.phtml">
+                <block class="Magento\Store\Block\Switcher" name="footer.store_switcher" template="switch/stores.phtml"/>
+                <block class="Magento\Newsletter\Block\Subscribe" name="footer.newsletter" template="subscribe_footer.phtml"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
